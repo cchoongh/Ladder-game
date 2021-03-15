@@ -1,0 +1,34 @@
+.main-cont {
+  width: 200px;
+  height: 240px;
+  padding: 20px;
+  border: 1px solid blue;
+}
+
+.line {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 5px;
+  height: 100px;
+  overflow: hidden;
+  background-color: red;
+
+  .inner {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+  }
+
+  &.up-down {
+    padding-top: 100px;
+  }
+
+  &.down-up {
+    padding-bottom: 100px;
+  }
+
+  &.fill {
+    transition: padding 1000ms linear;
+    padding: 0;
+  }
+}
