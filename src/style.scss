@@ -1,17 +1,33 @@
 .main-cont {
-  width: 200px;
   height: 240px;
-  padding: 20px;
+  padding: 40px;
   border: 1px solid blue;
 }
 
+$base-angle: -90deg;
+$unit-angle: 69.6769deg / 9;
+
 .line {
+  margin-right: 120px;
   display: inline-block;
   box-sizing: border-box;
-  width: 5px;
-  height: 100px;
   overflow: hidden;
+  width: 4px;
+  height: 100px;
+  border-radius: 4px;
   background-color: red;
+  transform-origin: top center; 
+  transform: rotate($base-angle);
+
+  @for $i from 1 through 9 {
+    &.up-#{$i} {
+      transform: rotate($base-angle - $unit-angle * $i);
+    }
+
+    &.down-#{$i} {
+      transform: rotate($base-angle + $unit-angle * $i);
+    }
+  }
 
   .inner {
     width: 100%;
@@ -19,11 +35,11 @@
     background-color: black;
   }
 
-  &.up-down {
+  &.left-to-right {
     padding-top: 100px;
   }
 
-  &.down-up {
+  &.right-to-left {
     padding-bottom: 100px;
   }
 
