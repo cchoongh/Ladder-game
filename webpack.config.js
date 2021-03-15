@@ -4,7 +4,7 @@ module.exports = {
   mode: 'development',
   devtool: 'source-map',
   entry: {
-    app: ['@babel/polyfill', __dirname + '/src/js/app.js'],
+    app: ['@babel/polyfill', __dirname + '/src/app.js'],
   },
   output: {
     path: __dirname + '/dist',
