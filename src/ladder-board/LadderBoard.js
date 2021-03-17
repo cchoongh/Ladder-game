@@ -41,7 +41,7 @@ export class LadderBoardView {
   }
 
   initStyle() {
-    this.$target.style.width = `${(this.matrixColumnSize - 1) * (COLUMN_INTERVAL + LINE_WIDTH)}px`;
+    this.$target.style.width = `${(this.matrixColumnSize - 1) * COLUMN_INTERVAL + LINE_WIDTH}px`;
     this.$target.style.height = `${(this.matrixRowSize - 1) * ROW_INTERVAL + LINE_WIDTH}px`;
   }
 
