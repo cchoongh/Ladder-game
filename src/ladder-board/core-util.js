@@ -2,27 +2,28 @@ export function calculateLength(position1, position2) {
   return Math.sqrt((position2.top - position1.top) ** 2 + (position2.left - position1.left) ** 2);
 }
 
-export function generateConnectionLineData({ rowCnt, columnCnt, distribution } = {}) {
+export function generateConnectionLineData({ rowSize, columnSize, distribution } = {}) {
   distribution = distribution ?? [{ 0: 0.02 }, { 1: 0.19 }, { 2: 0.3 }, { 3: 0.3 }, { 4: 0.19 }];
 
-  const connectionLines = [];
-  const pointMatrix = [...Array(columnCnt)].map(() => [...Array(rowCnt).keys()]);
-  const generateConnectionCnt = initRandomNumberGenerator(distribution);
+  const result = [];
+  const pointMatrix = [...Array(columnSize)].map(() => [...Array(rowSize).keys()]);
+  const generateConnectionSize = initRandomNumberGenerator(distribution);
 
-  for (let c = 0; c < columnCnt - 1; c++) {
-    const connectionCnt = generateConnectionCnt();
+  for (let c = 0; c < columnSize - 1; c++) {
+    const connectionSize = generateConnectionSize();
     const currLinePoints = pointMatrix[c];
     const nextLinePoints = pointMatrix[c + 1];
-    const src = selectFromArray({ selectCnt: connectionCnt, arr: currLinePoints }).sort();
-    const dst = selectFromArray({ selectCnt: connectionCnt, arr: nextLinePoints }).sort();
-    const connections = [];
+    const src = selectFromArray({ selectSize: connectionSize, arr: currLinePoints }).sort();
+    const dst = selectFromArray({ selectSize: connectionSize, arr: nextLinePoints }).sort();
+    // const connections = [];
 
-    for (let i = 0; i < src.length; i++) connections.push([src[i], dst[i]]);
+    for (let i = 0; i < src.length; i++)
+      result.push([[src[i], c], [dst[i], c + 1]]);
 
-    connectionLines.push(connections);
+    // result.push(connections);
   }
 
-  return connectionLines;
+  return result;
 }
 
 function initRandomNumberGenerator(distribution) {
@@ -52,7 +53,7 @@ function initRandomNumberGenerator(distribution) {
   };
 }
 
-function selectFromArray({ selectCnt, arr }) {
+function selectFromArray({ selectSize, arr }) {
   const swap = (i, j) => {
     const tmp = arr[i];
     arr[i] = arr[j];
@@ -61,7 +62,7 @@ function selectFromArray({ selectCnt, arr }) {
 
   const result = [];
 
-  for (let i = 0; i < selectCnt; i++) {
+  for (let i = 0; i < selectSize; i++) {
     const randomIdx = Math.floor(Math.random() * arr.length);
     swap(0, randomIdx);
     result.push(arr.shift());
@@ -70,14 +71,14 @@ function selectFromArray({ selectCnt, arr }) {
   return result;
 }
 
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
-// console.log(generateConnectionLineData({ rowCnt: 10, columnCnt: 5 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));
+// console.log(generateConnectionLineData({ rowSize: 10, columnSize: 4 }));

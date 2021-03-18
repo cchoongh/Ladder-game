@@ -176,7 +176,9 @@ class LineView {
     this.$target.style.top = `${startPositionPixel.top}px`;
     this.$target.style.left = `${startPositionPixel.left}px`;
     this.$target.style.height = `${calculateLength(startPositionPixel, endPositionPixel) + LINE_WIDTH}px`;
-    // TODO: length
+
+    if (startPositionPixel.left != endPositionPixel.left)
+      this.$target.style.transform = `rotate(-90deg) rotate(${Math.atan((endPositionPixel.top - startPositionPixel.top) / COLUMN_INTERVAL)}rad)`;
   }
 
   run() {
