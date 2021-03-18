@@ -6,7 +6,8 @@ export class Cell {
     this.rowIdx = rowIdx;
     this.columnIdx = columnIdx;
     this.point;
-    this.line;
+    this.leftLine;
+    this.rightLine;
     this.init();
   }
 
@@ -14,12 +15,26 @@ export class Cell {
     this.point = new Point({ rowIdx: this.rowIdx, columnIdx: this.columnIdx });
   }
 
-  setLine(line) {
-    this.line = line;
+  setLeftLine(line) {
+    if (this.rightLine)
+      throw new Error('The right line already exists!');
+
+    this.leftLine = line;
   }
 
-  getLine() {
-    this.line;
+  setRightLine(line) {
+    if (this.leftLine)
+      throw new Error('The left line already exists!');
+      
+    this.rightLine = line;
+  }
+
+  getLeftLine() {
+    return this.leftLine;
+  }
+
+  getRightLine() {
+    return this.rightLine;
   }
 
   getPoint() {
@@ -37,7 +52,7 @@ export class Cell {
 
 class Point {
   constructor({ rowIdx, columnIdx }) {
-    this.$target;
+    // this.$target;
     this.rowIdx = rowIdx;
     this.columnIdx = columnIdx;
     this.top;
@@ -46,23 +61,23 @@ class Point {
   }
 
   init() {
-    this.$target = this.createEl();
+    // this.$target = this.createEl();
     this.top = this.rowIdx * Config.ROW_INTERVAL;
     this.left = this.columnIdx * Config.COLUMN_INTERVAL;
-    this.initStyle();
-    this.render();
+    // this.initStyle();
+    // this.render();
   }
 
-  initStyle() {
-    this.$target.style.top = `${this.top}px`;
-    this.$target.style.left = `${this.left}px`;
-  }
+  // initStyle() {
+  //   this.$target.style.top = `${this.top}px`;
+  //   this.$target.style.left = `${this.left}px`;
+  // }
 
-  createEl() {
-    return _.genEl('DIV', {
-      classNames: ['point'],
-    });
-  }
+  // createEl() {
+  //   return _.genEl('DIV', {
+  //     classNames: ['point'],
+  //   });
+  // }
 
   getPositionPixel() {
     return { top: this.top, left: this.left };
@@ -72,7 +87,7 @@ class Point {
     return this.$target;
   }
 
-  render() {
-    // TEST_TARGET.appendChild(this.$target);
-  }
+  // render() {
+  //   // TEST_TARGET.appendChild(this.$target);
+  // }
 }

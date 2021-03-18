@@ -3,6 +3,7 @@ import { Config } from './Config.js';
 import { LineView } from './LineView.js';
 import { Cell } from './Cell.js';
 import { LabelView } from './LabelView.js';
+import { OnPlayLineView } from './OnPlayLineView.js';
 
 export class LadderBoardView {
   constructor({ inputTexts, outputTexts, connectionLineData }) {
@@ -36,6 +37,7 @@ export class LadderBoardView {
     this.columnLineViews = this.createColumnLineViews();
     this.connectionLineViews = this.createConnectionLineViews(this.connectionLineData);
     this.initStyle();
+    this.onEvents();
     this.render();
   }
 
@@ -46,7 +48,46 @@ export class LadderBoardView {
     this.$lineContainer.style.height = `${(this.matrixRowSize - 1) * Config.ROW_INTERVAL}px`;
   }
 
-  run() {}
+  onEvents() {
+    // TODO: animation start logic
+    // this.$target.addEventHandler();
+
+    this.$inputContainer.addEventListener('click', ({ target }) => {
+      const startCell = this.getTopCellFromColumnIdx(target.dataset.index);
+      this.playFromCell(startCell);
+    });
+
+    this.$lineContainer.addEventListener('transitionend', ({ target }) => {
+      const nextRowIdx = target.dataset.endRowIndex;
+      const nextColumnIdx = target.dataset.endColumnIdx;
+
+      if (!nextRowIdx || !nextColumnIdx)
+        throw new Error('Invalid target!');
+
+      const nextCell = this.matrix[nextRowIdx][nextColumnIdx];
+      this.playFromCell(nextCell);
+    });
+  }
+
+  playFromCell(cell) {
+    console.log(`start: ${cell.getRowIdx()}, ${cell.getColumnIdx()}`);
+    const currCell = cell;
+    const nextCornerCell = this.getNextCornerCell(cell);
+    let onPlayLine;
+
+    if (currCell.getColumnIdx() === nextCornerCell.getColumnIdx()) {
+      onPlayLine = new OnPlayLineView({ startCell: currCell, endCell: nextCornerCell });
+    } else if (nextCornerCell.getLeftLine()) {
+      onPlayLine = new OnPlayLineView({ lineView: nextCornerCell.getLeftLine() });
+    } else if (nextCornerCell.getRightLine()) {
+      onPlayLine = new OnPlayLineView({ lineView: nextCornerCell.getRightLine() });
+    } else {
+      throw new Error('Not reached!');
+    }
+
+    this.$lineContainer.appendChild(onPlayLine.getEl());
+    onPlayLine.play();
+  }
 
   createEl() {
     return _.genEl('DIV', {
@@ -61,7 +102,8 @@ export class LadderBoardView {
     for (let r = 0; r < this.matrixRowSize; r++) {
       result.push(Array(this.matrixColumnSize));
 
-      for (let c = 0; c < this.matrixColumnSize; c++) result[r][c] = new Cell({ rowIdx: r, columnIdx: c });
+      for (let c = 0; c < this.matrixColumnSize; c++)
+        result[r][c] = new Cell({ rowIdx: r, columnIdx: c });
     }
 
     return result;
@@ -70,8 +112,8 @@ export class LadderBoardView {
   createLabelViews(texts) {
     const result = [];
 
-    texts.forEach(text => {
-      const labelView = new LabelView(text);
+    texts.forEach((text, idx) => {
+      const labelView = new LabelView({ text, idx });
       result.push(labelView);
     });
 
@@ -108,12 +150,27 @@ export class LadderBoardView {
       const line = new LineView({ startCell, endCell });
       line.getEl().classList.add('connection');
 
-      startCell.setLine(line);
-      endCell.setLine(line);
+      startCell.setRightLine(line);
+      endCell.setLeftLine(line);
       result.push(line);
     });
 
     return result;
+  }
+
+  getNextCornerCell(cell) {
+    let currCell = this.matrix[cell.getRowIdx()][cell.getColumnIdx()];
+
+    while (currCell && !currCell.getLeftLine() && !currCell.getRightLine()) {
+      const tmpCell = this.matrix[currCell.getRowIdx() + 1]?.[currCell.getColumnIdx()];
+
+      if (!tmpCell)
+        break;
+
+      currCell = tmpCell;
+    }
+
+    return currCell;
   }
 
   getTopCellFromColumnIdx(idx) {
