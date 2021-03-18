@@ -1,7 +1,7 @@
 import { _ } from '../util.js';
+import { Config } from './Config.js';
 import { calculateLength } from './core-util.js';
 import { Cell } from './Cell.js';
-import { Config } from './Config.js';
 
 export class LineView {
   constructor({ startCell, endCell }) {

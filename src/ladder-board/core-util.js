@@ -1,8 +1,11 @@
+import { Config } from './Config.js';
+
 export function calculateLength(position1, position2) {
   return Math.sqrt((position2.top - position1.top) ** 2 + (position2.left - position1.left) ** 2);
 }
 
 export function generateConnectionLineData({ rowSize, columnSize, distribution } = {}) {
+  rowSize = rowSize ?? Config.ROW_SIZE;
   distribution = distribution ?? [{ 0: 0.02 }, { 1: 0.19 }, { 2: 0.3 }, { 3: 0.3 }, { 4: 0.19 }];
 
   const result = [];
@@ -15,12 +18,9 @@ export function generateConnectionLineData({ rowSize, columnSize, distribution }
     const nextLinePoints = pointMatrix[c + 1];
     const src = selectFromArray({ selectSize: connectionSize, arr: currLinePoints }).sort();
     const dst = selectFromArray({ selectSize: connectionSize, arr: nextLinePoints }).sort();
-    // const connections = [];
 
     for (let i = 0; i < src.length; i++)
       result.push([[src[i], c], [dst[i], c + 1]]);
-
-    // result.push(connections);
   }
 
   return result;

@@ -2,60 +2,98 @@ $line-width: 4px;
 $input-view-height: 50px; // TODO
 
 .ladder-board {
-  box-shadow: 0 0 0 1px blue inset;
+  border: 5px solid pink;
 
   display: inline-block;
-  position: relative;
 }
 
-.line {
-  $tmp-color: blue;
-  background-color: $tmp-color;
+.line-cont {
+  display: inline-block;
+  position: relative;
+  margin: 0 50px;
 
-  position: absolute;
-  width: $line-width;
-  // height: 100px + $line-width;
-  border-radius: $line-width;
-  transform-origin: ($line-width / 2) ($line-width / 2);
+  .line {
+    $tmp-color: blue;
+    background-color: $tmp-color;
 
-  &.connection {
-    transform: rotate(-90deg);
-  }
+    position: absolute;
+    width: $line-width;
+    transform-origin: ($line-width / 2) ($line-width / 2);
 
-  // &.column + &.column {
-  //   margin-left: 100px - $line-width;
-  // }
+    &.connection {
+      transform: rotate(-90deg);
+      border-radius: $line-width;
+    }
 
-  &.column {
-    display: inline-block;
-    background-color: black;
-  }
-
-  .on-play {
-    margin-right: 120px;
-    display: inline-block;
-    box-sizing: border-box;
-    overflow: hidden;
-    background-color: red;
-  
-    .inner {
-      width: 100%;
-      height: 100%;
+    &.column {
+      display: inline-block;
       background-color: black;
     }
-  
-    &.left-to-right, &.up-to-down {
-      padding-top: 100px;
+
+    .on-play {
+      margin-right: 120px;
+      display: inline-block;
+      box-sizing: border-box;
+      overflow: hidden;
+      background-color: red;
+
+      .inner {
+        width: 100%;
+        height: 100%;
+        background-color: black;
+      }
+
+      &.left-to-right,
+      &.up-to-down {
+        padding-top: 100px;
+      }
+
+      &.right-to-left,
+      &.down-to-up {
+        padding-bottom: 100px;
+      }
+
+      &.fill {
+        transition: padding 1000ms linear;
+        padding: 0;
+      }
     }
-  
-    &.right-to-left, &.down-to-up {
-      padding-bottom: 100px;
-    }
-  
-    &.fill {
-      transition: padding 1000ms linear;
-      padding: 0;
-    }
+  }
+}
+
+%label {
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+  margin-left: 15px + $line-width / 2;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 0 0 1px red inset;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+.input-cont {
+  box-shadow: 0 0 0 1px green inset;
+
+  .label + .label {
+    margin-left: 30px;
+  }
+
+  .label {
+    @extend %label;
+  }
+}
+
+.output-cont {
+  box-shadow: 0 0 0 1px orange inset;
+
+  .label + .label {
+    margin-left: 30px;
+  }
+
+  .label {
+    @extend %label;
   }
 }
 
@@ -65,6 +103,6 @@ $input-view-height: 50px; // TODO
   width: 4px;
   height: 4px;
   border-radius: 4px;
-  background-color : red;
+  background-color: red;
   z-index: 9999;
 }
