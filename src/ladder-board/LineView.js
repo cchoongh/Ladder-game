@@ -1,25 +1,17 @@
 import { _ } from '../util.js';
-import { Config } from './Config.js';
+import { Config } from './global.js';
 import { calculateLength } from './core-util.js';
 import { Cell } from './Cell.js';
 
 export class LineView {
-  constructor({ lineView, startCell, endCell }) {
+  constructor({ startCell, endCell }) {
     this.$target;
-    this.lineView = lineView;
     this.startCell = startCell;
     this.endCell = endCell;
-    // this.next; // FIXME??
     this.init();
   }
 
   init() {
-    if (this.lineView) {
-      this.$target = lineView.getEl().cloneNode();
-      this.$target.innerHTML = `<div class="inner"></div>`;
-      return;
-    }
-
     this.$target = this.createEl();
     this.initStyle();
   }
@@ -35,27 +27,11 @@ export class LineView {
       this.$target.style.transform = `rotate(-90deg) rotate(${Math.atan((endPositionPixel.top - startPositionPixel.top) / Config.COLUMN_INTERVAL)}rad)`;
   }
 
-  run() {
-    // TODO
-  }
-
   createEl() {
     return _.genEl('DIV', {
       classNames: ['line'],
-      attributes: {
-        "data-end-row-index": this.endCell.getRowIdx(),
-        "data-end-column-index": this.endCell.getColumnIdx(),
-      }
     });
   }
-
-  // setNext(nextLine) {
-  //   this.next = nextLine;
-  // }
-
-  // getNext() {
-  //   return this.next;
-  // }
 
   getEl() {
     return this.$target;

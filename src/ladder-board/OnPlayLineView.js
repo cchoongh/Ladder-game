@@ -1,34 +1,28 @@
 import { _ } from '../util';
 import { calculateLength } from './core-util.js';
-import { Config } from './Config.js';
+import { Config, Direction } from './global.js';
 import { LineView } from './LineView.js';
 
 export class OnPlayLineView {
-  constructor({ lineView, startCell, endCell }) {
+  constructor({ lineView, startCell, endCell, direction }) {
     this.$target;
+    this.$inner;
     this.lineView = lineView;
     this.startCell = startCell;
     this.endCell = endCell;
+    this.direction = direction;
     this.init();
   }
 
   init() {
     if (this.lineView) {
-      this.$target = this.lineView.getEl().cloneNode(true);
       this.startCell = this.lineView.getStartCell();
       this.endCell = this.lineView.getEndCell();
-    } else  {
-      this.$target = this.createEl();
-      this.initStyle();
     }
 
-    if (this.startCell.getColumnIdx() === this.endCell.getColumnIdx()) {
-      this.$target.classList.add('up-to-down');
-    } else if (this.startCell.getColumnIdx() < this.endCell.getColumnIdx()) {
-      this.$target.classList.add('left-to-right');
-    } else {
-      this.$target.classList.add('right-to-left');
-    }
+    this.$target = this.createEl();
+    this.$inner = this.$target.firstElementChild;
+    this.initStyle();
   }
 
   initStyle() { // FIXME: this logic is same as it of 'LineView'
@@ -40,10 +34,29 @@ export class OnPlayLineView {
   
     if (startPositionPixel.left != endPositionPixel.left)
       this.$target.style.transform = `rotate(-90deg) rotate(${Math.atan((endPositionPixel.top - startPositionPixel.top) / Config.COLUMN_INTERVAL)}rad)`;
+
+    // from here, different to 'LineView'
+    this.$inner.style.height = this.$target.style.height;
+    
+    switch (this.direction) {
+      case Direction.DOWN:
+      case Direction.RIGHT:
+        this.$inner.style.top = `-${this.$target.style.height}`;
+        break;
+      case Direction.LEFT:
+        this.$inner.style.top = this.$target.style.height;
+        break;
+    }
   }
   
   play() {
-    this.$target.classList.add('fill');
+    setImmediate(() => {
+      this.$inner.style.transition = `top 1000ms linear`; // TODO: apply ms according to length
+      this.$inner.style.top = '0px';
+
+      if (this.direction === Direction.RIGHT) this.endCell.doneFromLeft();
+      else if (this.direction === Direction.LEFT) this.startCell.doneFromRight();
+    });
   }
 
   createEl() {
@@ -51,8 +64,8 @@ export class OnPlayLineView {
       classNames: ['on-play-line'],
       template: this.template(),
       attributes: {
-        "data-end-row-index": this.endCell.getRowIdx(),
-        "data-end-column-index": this.endCell.getColumnIdx(),
+        "data-end-row-index": this.direction === Direction.LEFT ? this.startCell.getRowIdx() : this.endCell.getRowIdx(),
+        "data-end-column-index": this.direction === Direction.LEFT ? this.startCell.getColumnIdx() : this.endCell.getColumnIdx(),
       }
     });
   }

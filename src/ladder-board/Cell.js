@@ -1,18 +1,36 @@
 import { _ } from '../util.js';
-import { Config } from './Config.js';
+import { Config } from './global.js';
 
 export class Cell {
   constructor({ rowIdx, columnIdx }) {
     this.rowIdx = rowIdx;
     this.columnIdx = columnIdx;
-    this.point;
+    this.point; // FIXME: delete?
     this.leftLine;
     this.rightLine;
+    this.isDoneFromLeft = false; // FIXME: temporally naming to avoid conflict to below methods
+    this.isDoneFromRight = false;
     this.init();
   }
 
   init() {
     this.point = new Point({ rowIdx: this.rowIdx, columnIdx: this.columnIdx });
+  }
+
+  availableLeftLine() {
+    return this.leftLine && !this.isDoneFromLeft;
+  }
+
+  availableRightLine() {
+    return this.rightLine && !this.isDoneFromRight;
+  }
+
+  doneFromLeft() {
+    this.isDoneFromLeft = true;
+  }
+
+  doneFromRight() {
+    this.isDoneFromRight = true;
   }
 
   setLeftLine(line) {
@@ -25,7 +43,7 @@ export class Cell {
   setRightLine(line) {
     if (this.leftLine)
       throw new Error('The left line already exists!');
-      
+
     this.rightLine = line;
   }
 

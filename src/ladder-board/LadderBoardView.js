@@ -1,5 +1,5 @@
 import { _ } from '../util.js';
-import { Config } from './Config.js';
+import { Config, Direction } from './global.js';
 import { LineView } from './LineView.js';
 import { Cell } from './Cell.js';
 import { LabelView } from './LabelView.js';
@@ -58,15 +58,22 @@ export class LadderBoardView {
     });
 
     this.$lineContainer.addEventListener('transitionend', ({ target }) => {
-      const nextRowIdx = target.dataset.endRowIndex;
-      const nextColumnIdx = target.dataset.endColumnIdx;
-
-      if (!nextRowIdx || !nextColumnIdx)
-        throw new Error('Invalid target!');
+      const $onPlayLine = target.parentElement;
+      const nextRowIdx = Number($onPlayLine.dataset.endRowIndex);
+      const nextColumnIdx = Number($onPlayLine.dataset.endColumnIndex);
+      
+      if (nextRowIdx === this.matrixRowSize - 1) {
+        // TODO: end logic
+        return;
+      }
 
       const nextCell = this.matrix[nextRowIdx][nextColumnIdx];
       this.playFromCell(nextCell);
     });
+  }
+
+  play(columnIdx) {
+    // TODO: intended to be called from 'LadderGame' object
   }
 
   playFromCell(cell) {
@@ -76,11 +83,13 @@ export class LadderBoardView {
     let onPlayLine;
 
     if (currCell.getColumnIdx() === nextCornerCell.getColumnIdx()) {
-      onPlayLine = new OnPlayLineView({ startCell: currCell, endCell: nextCornerCell });
-    } else if (nextCornerCell.getLeftLine()) {
-      onPlayLine = new OnPlayLineView({ lineView: nextCornerCell.getLeftLine() });
-    } else if (nextCornerCell.getRightLine()) {
-      onPlayLine = new OnPlayLineView({ lineView: nextCornerCell.getRightLine() });
+      onPlayLine = new OnPlayLineView({ startCell: currCell, endCell: nextCornerCell, direction: Direction.DOWN });
+    } else if (currCell.getColumnIdx() > nextCornerCell.getColumnIdx()) {
+      onPlayLine = new OnPlayLineView({ lineView: currCell.getLeftLine(), direction: Direction.LEFT });
+      // onPlayLine = new OnPlayLineView({ startCell: nextCornerCell, endCell: currCell, direction: Direction.LEFT });
+    } else if (currCell.getColumnIdx() < nextCornerCell.getColumnIdx()) {
+      onPlayLine = new OnPlayLineView({ lineView: currCell.getRightLine(), direction: Direction.RIGHT });
+      // onPlayLine = new OnPlayLineView({ startCell: currCell, endCell: nextCornerCell, direction: Direction.RIGHT });
     } else {
       throw new Error('Not reached!');
     }
@@ -159,15 +168,16 @@ export class LadderBoardView {
   }
 
   getNextCornerCell(cell) {
-    let currCell = this.matrix[cell.getRowIdx()][cell.getColumnIdx()];
+    let currCell = cell;
 
-    while (currCell && !currCell.getLeftLine() && !currCell.getRightLine()) {
-      const tmpCell = this.matrix[currCell.getRowIdx() + 1]?.[currCell.getColumnIdx()];
+    if (currCell.availableLeftLine()) return currCell.getLeftLine().getStartCell();
+    if (currCell.availableRightLine()) return currCell.getRightLine().getEndCell();
 
-      if (!tmpCell)
-        break;
+    while (currCell && !currCell.availableLeftLine() && !currCell.availableRightLine()) {
+      if (currCell.getRowIdx() === this.matrixRowSize - 1)
+        return currCell;
 
-      currCell = tmpCell;
+      currCell = this.matrix[currCell.getRowIdx() + 1][currCell.getColumnIdx()];
     }
 
     return currCell;
@@ -194,7 +204,9 @@ export class LadderBoardView {
 
   template() {
     return `<div class="input-cont"></div>
-            <div class="line-cont"></div>
+            <div class="line-cont">
+              <div class="on-play-line-cont"></div>
+            </div>
             <div class="output-cont"></div>`
   }
 }
