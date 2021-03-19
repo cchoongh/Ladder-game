@@ -1,10 +1,20 @@
 import { Config } from './global.js';
 
+export function getCssRandomPastelColors() {
+  const result = [];
+
+  for (let hue = 30; hue <= 360; hue += 30) {
+    result.push(`hsl(${hue}, 70%, 80%)`);
+  }
+
+  return suffle(result);
+}
+
 export function calculateLength(position1, position2) {
   return Math.sqrt((position2.top - position1.top) ** 2 + (position2.left - position1.left) ** 2);
 }
 
-export function generateConnectionLineData({ rowSize, columnSize, distribution } = {}) {
+export function generateConnectionLineData({ rowSize, columnSize, distribution }) {
   rowSize = rowSize ?? Config.ROW_SIZE;
   distribution = distribution ?? [{ 0: 0.02 }, { 1: 0.19 }, { 2: 0.3 }, { 3: 0.3 }, { 4: 0.19 }];
 
@@ -24,6 +34,10 @@ export function generateConnectionLineData({ rowSize, columnSize, distribution }
   }
 
   return result;
+}
+
+function suffle(arr) {
+  return arr.map(e => ([Math.random(), e])).sort((a, b) => a[0] - b[0]).map(e => e[1]);
 }
 
 function initRandomNumberGenerator(distribution) {

@@ -4,13 +4,14 @@ import { Config, Direction } from './global.js';
 import { LineView } from './LineView.js';
 
 export class OnPlayLineView {
-  constructor({ lineView, startCell, endCell, direction }) {
+  constructor({ lineView, startCell, endCell, direction, cssColor }) {
     this.$target;
     this.$inner;
     this.lineView = lineView;
     this.startCell = startCell;
     this.endCell = endCell;
     this.direction = direction;
+    this.cssColor = cssColor;
     this.init();
   }
 
@@ -40,6 +41,7 @@ export class OnPlayLineView {
     if (this.endCell.getRowIdx() === Config.ROW_SIZE + 1) this.$target.style.borderRadius = `${Config.LINE_WIDTH}px ${Config.LINE_WIDTH}px 0 0`;
 
     this.$inner.style.height = this.$target.style.height;
+    this.$inner.style.backgroundColor = this.cssColor;
     
     switch (this.direction) {
       case Direction.DOWN:
@@ -54,7 +56,7 @@ export class OnPlayLineView {
   
   play() {
     setImmediate(() => {
-      this.$inner.style.transition = `top 1000ms linear`; // TODO: apply ms according to length
+      this.$inner.style.transition = `top ${Config.PLAY_SPEED * parseInt(this.$inner.style.height)}ms linear`; // TODO: apply ms according to length
       this.$inner.style.top = '0px';
 
       if (this.direction === Direction.RIGHT) this.endCell.doneFromLeft();

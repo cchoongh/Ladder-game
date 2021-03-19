@@ -1,5 +1,4 @@
 $line-width: 4px;
-$input-view-height: 50px; // TODO
 
 .ladder-board {
   border: 5px solid pink;
@@ -20,11 +19,8 @@ $input-view-height: 50px; // TODO
   }
 
   .line {
-    // $tmp-color: blue;
-    // background-color: $tmp-color;
-
     @extend %line;
-    background-color: black;
+    background-color: rgb(148, 148, 148);
 
     &.connection {
       transform: rotate(-90deg);
@@ -33,7 +29,6 @@ $input-view-height: 50px; // TODO
 
     &.column {
       display: inline-block;
-      background-color: black;
     }
   }
 
@@ -43,13 +38,11 @@ $input-view-height: 50px; // TODO
     box-sizing: border-box;
     overflow: hidden;
     border-radius: 9999px;
-    background-color: rgb(126, 115, 115); // TODO: change to 'transparent'
     z-index: 5;
 
     .inner {
       position: relative;
       width: 100%;
-      background-color: green; // custom
       z-index: inherit;
     }
   }
@@ -92,12 +85,12 @@ $input-view-height: 50px; // TODO
   }
 }
 
-.point {
-  position: absolute;
-  left: 0;
-  width: 4px;
-  height: 4px;
-  border-radius: 4px;
-  background-color: red;
-  z-index: 9999;
-}
+// .point {
+//   position: absolute;
+//   left: 0;
+//   width: 4px;
+//   height: 4px;
+//   border-radius: 4px;
+//   background-color: red;
+//   z-index: 9999;
+// }

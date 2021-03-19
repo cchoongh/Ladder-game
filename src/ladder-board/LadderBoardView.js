@@ -1,4 +1,5 @@
 import { _ } from '../util.js';
+import { getCssRandomPastelColors } from './core-util.js';
 import { Config, Direction } from './global.js';
 import { LineView } from './LineView.js';
 import { Cell } from './Cell.js';
@@ -20,6 +21,8 @@ export class LadderBoardView {
     this.columnLineViews;
     this.connectionLineViews;
     this.currOnPlayPath = [];
+    this.currCssColor;
+    this.cssPastelColors = getCssRandomPastelColors();
     this.matrix;
     this.matrixRowSize = Config.ROW_SIZE + 2;
     this.matrixColumnSize = inputTexts.length;
@@ -48,8 +51,8 @@ export class LadderBoardView {
 
   onEvents() {
     this.$inputContainer.addEventListener('click', ({ target }) => {
-      const startCell = this.getTopCellFromColumnIdx(target.dataset.index);
-      this.playFromCell(startCell);
+      // const startCell = this.getTopCellFromColumnIdx(target.dataset.index);
+      this.play(target.dataset.index);
     });
 
     this.$lineContainer.addEventListener('transitionend', ({ target }) => {
@@ -59,6 +62,7 @@ export class LadderBoardView {
       
       if (nextRowIdx === this.matrixRowSize - 1) {
         // TODO: end logic
+        this.currCssColor = null;
         this.currOnPlayPath = [];
         return;
       }
@@ -69,7 +73,8 @@ export class LadderBoardView {
   }
 
   play(columnIdx) {
-    // TODO: intended to be called from 'LadderGame' object
+    this.currCssColor = this.getNextCssColor();
+    this.playFromCell(this.matrix[0][columnIdx]);
   }
 
   playFromCell(cell) {
@@ -81,11 +86,24 @@ export class LadderBoardView {
     this.currOnPlayPath.push(nextCornerCell);
 
     if (currCell.getColumnIdx() === nextCornerCell.getColumnIdx()) {
-      onPlayLine = new OnPlayLineView({ startCell: currCell, endCell: nextCornerCell, direction: Direction.DOWN });
+      onPlayLine = new OnPlayLineView({
+        startCell: currCell,
+        endCell: nextCornerCell,
+        direction: Direction.DOWN,
+        cssColor: this.currCssColor
+      });
     } else if (currCell.getColumnIdx() > nextCornerCell.getColumnIdx()) {
-      onPlayLine = new OnPlayLineView({ lineView: currCell.getLeftLine(), direction: Direction.LEFT });
+      onPlayLine = new OnPlayLineView({
+        lineView: currCell.getLeftLine(),
+        direction: Direction.LEFT,
+        cssColor: this.currCssColor
+      });
     } else if (currCell.getColumnIdx() < nextCornerCell.getColumnIdx()) {
-      onPlayLine = new OnPlayLineView({ lineView: currCell.getRightLine(), direction: Direction.RIGHT });
+      onPlayLine = new OnPlayLineView({
+        lineView: currCell.getRightLine(),
+        direction: Direction.RIGHT,
+        cssColor: this.currCssColor
+      });
     } else {
       throw new Error('Not reached!');
     }
@@ -197,6 +215,12 @@ export class LadderBoardView {
 
   getBottomCellFromColumnIdx(idx) {
     return this.matrix[this.matrixRowSize - 1][idx];
+  }
+
+  getNextCssColor() {
+    const result = this.cssPastelColors.shift();
+    this.cssPastelColors.push(result);
+    return result;
   }
 
   getEl() {
