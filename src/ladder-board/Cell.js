@@ -18,11 +18,11 @@ export class Cell {
   }
 
   availableLeftLine() {
-    return this.leftLine && !this.isDoneFromLeft;
+    return this.leftLine && !this.leftLine.startCell.isDoneFromRight;
   }
 
   availableRightLine() {
-    return this.rightLine && !this.isDoneFromRight;
+    return this.rightLine && !this.rightLine.endCell.isDoneFromLeft;
   }
 
   doneFromLeft() {
@@ -70,7 +70,6 @@ export class Cell {
 
 class Point {
   constructor({ rowIdx, columnIdx }) {
-    // this.$target;
     this.rowIdx = rowIdx;
     this.columnIdx = columnIdx;
     this.top;
@@ -79,23 +78,9 @@ class Point {
   }
 
   init() {
-    // this.$target = this.createEl();
     this.top = this.rowIdx * Config.ROW_INTERVAL;
     this.left = this.columnIdx * Config.COLUMN_INTERVAL;
-    // this.initStyle();
-    // this.render();
   }
-
-  // initStyle() {
-  //   this.$target.style.top = `${this.top}px`;
-  //   this.$target.style.left = `${this.left}px`;
-  // }
-
-  // createEl() {
-  //   return _.genEl('DIV', {
-  //     classNames: ['point'],
-  //   });
-  // }
 
   getPositionPixel() {
     return { top: this.top, left: this.left };
@@ -104,8 +89,4 @@ class Point {
   getEl() {
     return this.$target;
   }
-
-  // render() {
-  //   // TEST_TARGET.appendChild(this.$target);
-  // }
 }
