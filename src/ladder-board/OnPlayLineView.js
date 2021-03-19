@@ -36,6 +36,9 @@ export class OnPlayLineView {
       this.$target.style.transform = `rotate(-90deg) rotate(${Math.atan((endPositionPixel.top - startPositionPixel.top) / Config.COLUMN_INTERVAL)}rad)`;
 
     // from here, different to 'LineView'
+    if (this.startCell.getRowIdx() === 0) this.$target.style.borderRadius = `0 0 ${Config.LINE_WIDTH}px ${Config.LINE_WIDTH}px`;
+    if (this.endCell.getRowIdx() === Config.ROW_SIZE + 1) this.$target.style.borderRadius = `${Config.LINE_WIDTH}px ${Config.LINE_WIDTH}px 0 0`;
+
     this.$inner.style.height = this.$target.style.height;
     
     switch (this.direction) {

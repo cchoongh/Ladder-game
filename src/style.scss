@@ -42,12 +42,15 @@ $input-view-height: 50px; // TODO
     display: inline-block;
     box-sizing: border-box;
     overflow: hidden;
+    border-radius: 9999px;
     background-color: rgb(126, 115, 115); // TODO: change to 'transparent'
+    z-index: 5;
 
     .inner {
       position: relative;
       width: 100%;
       background-color: green; // custom
+      z-index: inherit;
     }
   }
 }
@@ -62,6 +65,7 @@ $input-view-height: 50px; // TODO
   box-shadow: 0 0 0 1px red inset;
   z-index: 9999;
   cursor: pointer;
+  background-color: white; // FIXME
 }
 
 .input-cont {
