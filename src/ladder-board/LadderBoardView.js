@@ -1,3 +1,4 @@
+import './style.scss';
 import { _ } from '../util.js';
 import { getCssRandomPastelColors } from './core-util.js';
 import { Config, Direction } from './global.js';
@@ -51,7 +52,6 @@ export class LadderBoardView {
 
   onEvents() {
     this.$inputContainer.addEventListener('click', ({ target }) => {
-      // const startCell = this.getTopCellFromColumnIdx(target.dataset.index);
       this.play(target.dataset.index);
     });
 
@@ -236,9 +236,7 @@ export class LadderBoardView {
 
   template() {
     return `<div class="input-cont"></div>
-            <div class="line-cont">
-              <div class="on-play-line-cont"></div>
-            </div>
+            <div class="line-cont"></div>
             <div class="output-cont"></div>`
   }
 }

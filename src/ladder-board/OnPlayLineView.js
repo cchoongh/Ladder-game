@@ -1,3 +1,4 @@
+import './style.scss';
 import { _ } from '../util';
 import { calculateLength } from './core-util.js';
 import { Config, Direction } from './global.js';

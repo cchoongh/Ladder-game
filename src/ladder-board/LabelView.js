@@ -1,3 +1,4 @@
+import './style.scss';
 import { _ } from '../util.js';
 
 export class LabelView {

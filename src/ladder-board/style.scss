@@ -1,0 +1,96 @@
+$line-width: 4px;
+
+.ladder-board {
+  border: 5px solid pink;
+
+  display: inline-block;
+  position: relative;
+}
+
+.line-cont {
+  display: inline-block;
+  position: relative;
+  margin: 0 50px;
+
+  %line {
+    position: absolute;
+    width: $line-width;
+    transform-origin: ($line-width / 2) ($line-width / 2);
+  }
+
+  .line {
+    @extend %line;
+    background-color: rgb(148, 148, 148);
+
+    &.connection {
+      transform: rotate(-90deg);
+      border-radius: $line-width;
+    }
+
+    &.column {
+      display: inline-block;
+    }
+  }
+
+  .on-play-line {
+    @extend %line;
+    display: inline-block;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 9999px;
+    z-index: 5;
+
+    .inner {
+      position: relative;
+      width: 100%;
+      z-index: inherit;
+    }
+  }
+}
+
+%label {
+  display: inline-block;
+  width: 70px;
+  height: 30px;
+  margin-left: 15px + $line-width / 2;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 0 0 1px red inset;
+  z-index: 9999;
+  cursor: pointer;
+  background-color: white; // FIXME
+}
+
+.input-cont {
+  box-shadow: 0 0 0 1px green inset;
+
+  .label + .label {
+    margin-left: 30px;
+  }
+
+  .label {
+    @extend %label;
+  }
+}
+
+.output-cont {
+  box-shadow: 0 0 0 1px orange inset;
+
+  .label + .label {
+    margin-left: 30px;
+  }
+
+  .label {
+    @extend %label;
+  }
+}
+
+// .point {
+//   position: absolute;
+//   left: 0;
+//   width: 4px;
+//   height: 4px;
+//   border-radius: 4px;
+//   background-color: red;
+//   z-index: 9999;
+// }

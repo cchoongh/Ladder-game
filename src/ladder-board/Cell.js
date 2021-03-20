@@ -8,7 +8,7 @@ export class Cell {
     this.point; // FIXME: delete?
     this.leftLine;
     this.rightLine;
-    this.isDoneFromLeft = false; // FIXME: temporally naming to avoid conflict to below methods
+    this.isDoneFromLeft = false;
     this.isDoneFromRight = false;
     this.init();
   }
