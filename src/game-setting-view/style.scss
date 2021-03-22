@@ -1,0 +1,21 @@
+.game-setting {
+  display: inline-block;
+
+  %input {
+    width: 70px;
+    height: 30px;
+  }
+
+  .input-cont {
+    display: inline-block;
+    transition: right 100ms linear;
+  }
+
+  .output-cont {
+    display: inline-block;
+  }
+
+  .btn-cont {
+    display: inline-block;
+  }
+}
