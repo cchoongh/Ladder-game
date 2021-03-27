@@ -78,7 +78,7 @@ export class LadderBoardView {
   }
 
   playFromCell(cell) {
-    console.log(`start: ${cell.getRowIdx()}, ${cell.getColumnIdx()}`);
+    // console.log(`start: ${cell.getRowIdx()}, ${cell.getColumnIdx()}`);
     const currCell = cell;
     const nextCornerCell = this.getNextCornerCell(cell);
     let onPlayLine;
