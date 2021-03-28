@@ -3,7 +3,7 @@ import { _ } from './util.js';
 import { generateConnectionLineData } from './ladder-board/core-util.js';
 import { LadderBoardView } from './ladder-board/LadderBoardView.js';
 import { PagerView } from './pager/PagerView.js';
-import { PageView} from './pager/PageView.js';
+import { GameSettingView } from './game-setting-view/GameSettingView.js';
 
 document.addEventListener('DOMContentLoaded', pagerTest);
 
@@ -15,10 +15,11 @@ function ladderBoardViewTest() {
 }
 
 function pagerTest() {
+  const gameSettingView = new GameSettingView();
   const ladderBoardView = createLadderBoardView();
 
-  const pagerView = new PagerView({ width: 700, height: 450 });
-  pagerView.appendPageView({ $content: _.genEl('DIV', { classNames: ['page1'] })});
+  const pagerView = new PagerView({ pageWidth: 900, pageHeight: 600 });
+  pagerView.appendPageView({ $content: gameSettingView.getEl() });
   pagerView.appendPageView({ $content: ladderBoardView.getEl() });
   pagerView.appendPageView({ $content: _.genEl('DIV', { classNames: ['page3'] })});
   document.body.appendChild(pagerView.getEl());
