@@ -1,19 +1,6 @@
-%test-page {
+html,
+body {
   width: 100%;
   height: 100%;
-}
-
-.page1 {
-  @extend %test-page;
-  background-color: red;
-}
-
-.page2 {
-  @extend %test-page;
-  background-color: blue;
-}
-
-.page3 {
-  @extend %test-page;
-  background-color: green;
+  margin: 0;
 }

@@ -3,11 +3,11 @@ import { _ } from '../util.js';
 import { PageView } from './PageView.js';
 
 export class PagerView {
-  constructor({ width, height }) {
+  constructor({ pageWidth, pageHeight }) {
     this.$target;
     this.$pageContainer;
-    this.width = width; // px
-    this.height = height; // px
+    this.pageWidth = pageWidth; // px
+    this.pageHeight = pageHeight; // px
     this.pageViews = [];
     // this.currPageIdx = 0;
     this.init();
@@ -21,8 +21,8 @@ export class PagerView {
   }
 
   initStyle() {
-    this.$target.style.width = `${this.width}px`;
-    this.$target.style.height = `${this.height}px`;
+    // this.$target.style.width = `${this.width}px`;
+    // this.$target.style.height = `${this.height}px`;
   }
 
   updateStyle() {
@@ -40,8 +40,8 @@ export class PagerView {
 
   appendPageView({ $content }) {
     const pageView = new PageView({
-      width: this.width,
-      height: this.height,
+      width: this.pageWidth,
+      height: this.pageHeight,
       $content
     });
     this.pageViews.push(pageView);
@@ -59,6 +59,16 @@ export class PagerView {
     this.updateStyle();
   }
 
+  popfrontPageView() {
+    const poppedPageView = this.pageViews.shift();
+
+    if (!poppedPageView)
+      return;
+
+    poppedPageView.getEl().remove();
+    this.updateStyle();
+  }
+
   insertPageView(idx, pageView) {
     this.pageViews.splice(idx, 0, pageView);
   }
@@ -68,13 +78,13 @@ export class PagerView {
   }
 
   prevPage() {
-    const tmpLeft = this.$pageContainer.style.left ? parseInt(this.$pageContainer.style.left) : 0;
-    this.$pageContainer.style.left = `${tmpLeft + this.width}px`;
+    const currLeft = this.$pageContainer.style.left ? parseInt(this.$pageContainer.style.left) : 0;
+    this.$pageContainer.style.left = `${currLeft + Math.max(this.pageWidth, parseInt(window.innerWidth))}px`;
   }
 
   nextPage() {
-    const tmpLeft = this.$pageContainer.style.left ? parseInt(this.$pageContainer.style.left) : 0;
-    this.$pageContainer.style.left = `${tmpLeft - this.width}px`;
+    const currLeft = this.$pageContainer.style.left ? parseInt(this.$pageContainer.style.left) : 0;
+    this.$pageContainer.style.left = `${currLeft - Math.max(this.pageWidth, parseInt(window.innerWidth))}px`;
   }
 
   firstPage() {
