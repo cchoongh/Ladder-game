@@ -4,12 +4,14 @@ import { _ } from '../util.js';
 export class InputFormView {
   constructor() {
     this.$target;
+    this.$input;
     this.$addBtn;
     this.init();
   }
 
   init() {
     this.$target = this.createEl();
+    this.$input = _.$('.input', this.$target);
     this.$addBtn = _.$('.add-btn', this.$target);
     this.onEvents();
   }
@@ -19,6 +21,14 @@ export class InputFormView {
   }
 
   onClickAddBtn() {
+    this.removeAddBtn();
+  }
+
+  focus() {
+    this.$input.focus();
+  }
+
+  removeAddBtn() {
     this.$addBtn.remove();
   }
 
@@ -34,7 +44,7 @@ export class InputFormView {
   }
 
   template() {
-    return `<input class="input"></input>
+    return `<input class="input" maxlength="8" autofocus></input>
             <button class="add-btn">+</button>`
   }
 }

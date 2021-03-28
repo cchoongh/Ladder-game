@@ -1,3 +1,7 @@
+button:active {
+  transform: translateY(1px);
+}
+
 .game-setting {
   display: inline-block;
 
@@ -7,29 +11,42 @@
   .input-form-cont {
     display: inline-block;
     position: relative;
-    width: 200px;
+    width: 240px;
+    height: 6 * ($common-height + 10px) - 10px;
+    overflow: auto;
     transition: right 100ms linear;
     box-shadow: 0 0 1px red inset;
 
     .input-form + .input-form {
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .input-form {
       display: flex;
       flex-direction: row;
-      flex: 80%;
+      justify-content: space-between;
+      width: 100%;
       height: $common-height;
 
+      .input {
+        box-sizing: border-box;
+        width: 80%;
+        padding-left: 8px;
+        font-size: 22px;
+        outline: none;
+        border: none;
+        border-radius: 8px;
+      }
+
       .add-btn {
-        flex: 20%;
         width: $common-height;
-        height: inherit;
         line-height: 34px;
         font-size: 34px;
         font-weight: 800;
         color: white;
-        background-color: red;
+        border: none;
+        border-radius: 6px;
+        background-color: rgb(255, 90, 90);
       }
     }
   }
@@ -54,16 +71,26 @@
       // width: $common-height * 2;
       padding: 5px 10px;
       height: $common-height;
+      user-select: none;
+      border: none;
+      border-radius: 6px;
     }
 
     .reset-btn {
       @extend %common-btn-style;
-      background-color: plum;
+      background-color: rgb(255, 121, 255);
     }
 
     .complete-btn {
       @extend %common-btn-style;
       background-color: green;
+      opacity: 0.3;
+      pointer-events: none;
+
+      .enable {
+        opacity: 1;
+        pointer-events: auto;
+      }
     }
   }
 }

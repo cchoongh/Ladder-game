@@ -3,6 +3,8 @@ import { _ } from '../util.js';
 import { InputFormView } from './InputFormView.js';
 import { OutputFormView } from './OutputFormView.js';
 
+const MAX_FORM_CNT_ON_SCREEN = 6;
+
 export class GameSettingView {
   constructor() {
     this.$target;
@@ -17,7 +19,7 @@ export class GameSettingView {
     this.$target = this.createEl();
     this.$inputFormContainer = _.$('.input-form-cont', this.$target);
     this.$outputFormContainer = _.$('.output-form-cont', this.$target);
-    this.appendInputForm();
+    this.appendInputForms({ cnt: 2});
     this.onEvents();
   }
 
@@ -27,7 +29,13 @@ export class GameSettingView {
 
   onClickBtn({ target }) {
     if (target.classList.contains('add-btn')) {
-      this.appendInputForm();
+      const inputFormView = this.appendInputForm();
+      inputFormView.focus();
+      inputFormView.getEl().scrollIntoView();
+
+      if (this.inputFormViews.length === MAX_FORM_CNT_ON_SCREEN + 1) {
+        this.$inputFormContainer.style.width = `${this.$inputFormContainer.offsetWidth + _.getScrollbarWidth(this.$inputFormContainer)}px`;
+      }
     } else if (target.classList.contains('reset-btn')) {
       
     } else if (target.classList.contains('complete-btn')) {
@@ -39,14 +47,24 @@ export class GameSettingView {
     
   }
 
+  appendInputForms({ cnt }) {
+    for (let i = 0; i < cnt - 1; i++) {
+      const inputFormView = this.appendInputForm();
+      inputFormView.removeAddBtn();
+    }
+
+    this.appendInputForm();
+  }
+
   appendInputForm() {
     const inputFormView = new InputFormView();
     this.inputFormViews.push(inputFormView);
     this.$inputFormContainer.appendChild(inputFormView.getEl());
+    return inputFormView;
   }
 
   isPrepared() {
-    
+    // TODO
   }
 
   createEl() {

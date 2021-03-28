@@ -8,6 +8,9 @@ export const _ = {
     if (attributes) Object.entries(attributes).forEach(([k, v]) => $el.setAttribute(k, v));
     return $el;
   },
+  getScrollbarWidth(el) {
+    return el.offsetWidth - el.clientWidth;
+  },
   pipe: (...fns) => arg => fns.reduce((prevResult, fn) => fn(prevResult), arg),
   throttle: (fn, ms) => {
     let timerHandler;
