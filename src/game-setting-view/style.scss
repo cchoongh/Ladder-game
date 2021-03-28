@@ -1,21 +1,69 @@
 .game-setting {
   display: inline-block;
 
-  %input {
-    width: 70px;
-    height: 30px;
-  }
+  $common-width: 100px;
+  $common-height: 40px;
 
-  .input-cont {
+  .input-form-cont {
     display: inline-block;
+    position: relative;
+    width: 200px;
     transition: right 100ms linear;
+    box-shadow: 0 0 1px red inset;
+
+    .input-form + .input-form {
+      margin-top: 20px;
+    }
+
+    .input-form {
+      display: flex;
+      flex-direction: row;
+      flex: 80%;
+      height: $common-height;
+
+      .add-btn {
+        flex: 20%;
+        width: $common-height;
+        height: inherit;
+        line-height: 34px;
+        font-size: 34px;
+        font-weight: 800;
+        color: white;
+        background-color: red;
+      }
+    }
   }
 
-  .output-cont {
+  .output-form-cont {
     display: inline-block;
+    // width: $common-width;
+    // height: $common-height;
+    box-shadow: 0 0 1px blue inset;
   }
 
   .btn-cont {
-    display: inline-block;
+    display: block;
+    margin-top: 10px;
+    box-shadow: 0 0 1px green inset;
+
+    %common-btn-style {
+      display: inline-block;
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+      // width: $common-height * 2;
+      padding: 5px 10px;
+      height: $common-height;
+    }
+
+    .reset-btn {
+      @extend %common-btn-style;
+      background-color: plum;
+    }
+
+    .complete-btn {
+      @extend %common-btn-style;
+      background-color: green;
+    }
   }
 }
