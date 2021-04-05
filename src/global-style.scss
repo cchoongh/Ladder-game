@@ -1,0 +1,13 @@
+$global-common-height: 50px;
+
+button {
+  color: white;
+  outline: none;
+  border: none;
+  border-radius: 8px;
+  user-select: none;
+
+  &:focus {
+    border: 3px lightgray inset;
+  }
+}

@@ -1,93 +1,128 @@
+@import '../color.scss';
+@import '../global-style.scss';
+
 button:active {
   transform: translateY(1px);
 }
 
 .game-setting {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
 
-  $common-width: 100px;
-  $common-height: 40px;
+  $max_forms_on_screen: 8; // in GameSettingView.js
+
+  .common-form + .common-form {
+    margin-top: 10px;
+  }
+
+  .common-form {
+    $font-size: 22px;
+
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 100%;
+    height: $global-common-height;
+    font-size: $font-size;
+
+    .textfield-cont {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 12em;
+      background-color: white;
+      border-radius: 8px;
+
+      .common-form__number {
+        padding-left: 4px;
+        font-size: $font-size + 2px;
+        font-weight: 600;
+        color: gray;
+      }
+
+      .textfield {
+        box-sizing: border-box;
+        padding-left: 4px;
+        width: 100%;
+        font-size: $font-size;
+        outline: none;
+        border: none;
+        background-color: transparent;
+      }
+    }
+
+    %common-form__btn-style {
+      width: $global-common-height;
+      margin-left: 6px;
+      line-height: 34px;
+      font-size: 49px;
+    }
+
+    .add-btn {
+      @extend %common-form__btn-style;
+      background-color: rgb(255, 90, 90);
+    }
+
+    .remove-btn {
+      @extend %common-form__btn-style;
+      padding-bottom: 10px;
+      background-color: rgb(55, 41, 255);
+    }
+  }
 
   .input-form-cont {
     display: inline-block;
     position: relative;
-    width: 240px;
-    height: 6 * ($common-height + 10px) - 10px;
+    height: $max_forms_on_screen * ($global-common-height + 10px) - 8px;
     overflow: auto;
     transition: right 100ms linear;
     box-shadow: 0 0 1px red inset;
-
-    .input-form + .input-form {
-      margin-top: 10px;
-    }
-
-    .input-form {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      width: 100%;
-      height: $common-height;
-
-      .input {
-        box-sizing: border-box;
-        width: 80%;
-        padding-left: 8px;
-        font-size: 22px;
-        outline: none;
-        border: none;
-        border-radius: 8px;
-      }
-
-      .add-btn {
-        width: $common-height;
-        line-height: 34px;
-        font-size: 34px;
-        font-weight: 800;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        background-color: rgb(255, 90, 90);
-      }
-    }
   }
 
   .output-form-cont {
     display: inline-block;
-    // width: $common-width;
-    // height: $common-height;
     box-shadow: 0 0 1px blue inset;
   }
 
+  .divider {
+    align-self: center;
+    width: 2px;
+    height: 95%;
+    margin: 0 10px;
+    border-radius: 9999px;
+    background-color: #4883dc;
+  }
+
   .btn-cont {
-    display: block;
-    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 120px;
     box-shadow: 0 0 1px green inset;
 
-    %common-btn-style {
-      display: inline-block;
-      color: white;
+    %btn-cont__btn-style {
       font-size: 20px;
       font-weight: 800;
-      // width: $common-height * 2;
       padding: 5px 10px;
-      height: $common-height;
-      user-select: none;
-      border: none;
-      border-radius: 6px;
+      width: 100%;
+      height: $global-common-height;
+    }
+
+    %btn-cont__btn-style + %btn-cont__btn-style {
+      margin-top: 10px;
     }
 
     .reset-btn {
-      @extend %common-btn-style;
-      background-color: rgb(255, 121, 255);
+      @extend %btn-cont__btn-style;
+      background-color: $pink;
     }
 
     .complete-btn {
-      @extend %common-btn-style;
-      background-color: green;
+      @extend %btn-cont__btn-style;
+      background-color: $green;
       opacity: 0.3;
       pointer-events: none;
 
-      .enable {
+      &.enable {
         opacity: 1;
         pointer-events: auto;
       }
